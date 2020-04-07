@@ -1,8 +1,0 @@
-version: "2.4"
-
-services:
-  sut:
-    # successful build means tests passed, so just print version to exit
-    build: .
-    command: --version
-

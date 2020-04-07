@@ -1,7 +1,3 @@
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/subfuzion/envtpl.svg)](https://hub.docker.com/r/subfuzion/envtpl/)
-
-
 # envtpl
 
 `envtpl` renders [Go templates] on the command line using environment variables.
@@ -62,9 +58,9 @@ Render the template (assume the value of `$USER` is 'mary')
     unset USER; envtpl -m zero greeting.tpl    # => "Hello "
     unset USER; envtpl -m error greeting.tpl   # => "map has no entry for key "USER"", aborts
 
-	# Use a GitHub gist with curl
-	curl -s https://gist.githubusercontent.com/subfuzion/d5a6e3b7c2577902408069deb1d8e4d7/raw/2e4c0b894e2983411a20ffa5ee84aeafa5c6ebfb/greeting.tpl | envtpl
-	# => Hello, Tony
+    # Use a GitHub gist with curl
+    curl -s https://gist.githubusercontent.com/subfuzion/d5a6e3b7c2577902408069deb1d8e4d7/raw/2e4c0b894e2983411a20ffa5ee84aeafa5c6ebfb/greeting.tpl | envtpl
+    # => Hello, Tony
 
 See `test/test.tpl` for more examples, including conditional functions and looping over environment variables.
 
@@ -97,45 +93,6 @@ $ echo '{{ range $key, $value := environment "GO"  }}{{ $key }} => {{ $value }} 
 GOPATH => /Users/tony/go
 GOROOT => /usr/local/go
 ```
-
-## Building an envtpl Docker image
-
-[![Docker Build Status](https://img.shields.io/docker/build/subfuzion/envtpl.svg)](https://hub.docker.com/r/subfuzion/envtpl/)
-
-An image is available on Docker Hub [subfuzion/envtpl](https://hub.docker.com/r/subfuzion/envtpl/)
-
-You can use run a container like this:
-
-    $ echo 'Hello {{ .NAME | title | printf "%s\n" }}' | docker run -i --rm -e NAME=world subfuzion/envtpl
-    Hello World
-    
-    # using a gist
-    $ curl -s https://gist.githubusercontent.com/subfuzion/d5a6e3b7c2577902408069deb1d8e4d7/raw/2e4c0b894e2983411a20ffa5ee84aeafa5c6ebfb/greeting.tpl | docker run -i -e USER=$USER subfuzion/envtpl
-    Hello, Tony
-
-
-To build your own local container:
-
-	$ make image
-
-The final image is based on `scratch` and weighs in at less than 7MB:
-
-```bash
-$ docker images --format "{{ .Repository }}:{{ .Tag }} => {{ .Size }}" subfuzion/envtpl
-subfuzion/envtpl:latest => 6.65MB
-```
-	
-## Test
-
-The Dockerfile for the image explicitly runs tests, so if the image
-builds successfully, then the tests passed.
-
-There is an automated build for subfuzion/envtpl on Docker Hub. Docker
-Hub runs tests based on the presence of `docker-compose.test.yml`, so
-there is a `docker-compose.test.file` that simply builds the image and
-runs `envtpl --version`. You can test this yourself:
-
-    $ make test
 
 ## Similar Tools
 

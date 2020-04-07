@@ -9,13 +9,14 @@ bin/envtpl: $(SOURCES)
 
 build: bin/envtpl
 
+install:
+	go install ./cmd/envtpl/.
+
 clean:
 	rm -rf bin
 
 image:
-	docker build -t subfuzion/envtpl .
+	nix build -f . docker
 
 test:
-	docker-compose -f docker-compose.test.yml build
-	docker-compose -f docker-compose.test.yml run --rm sut
-
+	envtpl --version
